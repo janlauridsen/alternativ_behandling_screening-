@@ -1,0 +1,89 @@
+# ATONM – Treatment Annotations
+# Version: 1.0
+# Status: Optional, non-operational
+# Purpose: Human-readable context, evidence notes, and cautions
+# This file must not influence narrowing logic directly.
+
+hypnoterapi:
+  description_notes:
+    - Uses focused attention and guided suggestion as a conversational method.
+    - Often misunderstood due to media portrayals.
+
+  evidence_notes:
+    - Research exists in varying quality depending on definition and application.
+    - Outcomes are reported as highly individual and context-dependent.
+
+  common_associations:
+    - situational anxiety
+    - habit-related patterns
+    - focused mental work
+
+  cautions:
+    - Not a replacement for medical or psychiatric treatment.
+    - Experiences can vary significantly between sessions and individuals.
+
+  regulatory_notes:
+    - Not regulated as a medical treatment in Denmark.
+
+
+nada:
+  description_notes:
+    - Standardized ear acupuncture protocol used as a supportive practice.
+    - Often delivered in group or clinical-like settings.
+
+  evidence_notes:
+    - Primarily supported by observational studies and practice-based reports.
+    - Mechanisms are not fully established.
+
+  common_associations:
+    - stress regulation
+    - general support contexts
+
+  cautions:
+    - Not a medical treatment.
+    - Does not address underlying medical or psychological conditions.
+
+  regulatory_notes:
+    - Used as a complementary practice in some institutional contexts.
+
+
+zoneterapi:
+  description_notes:
+    - Manual pressure applied to specific areas of the feet.
+    - Typically experienced as a physical and sensory intervention.
+
+  evidence_notes:
+    - Research findings are mixed and methodologically diverse.
+    - Often studied in relation to comfort and well-being rather than outcomes.
+
+  common_associations:
+    - bodily discomfort
+    - general relaxation
+
+  cautions:
+    - Sensations during sessions can vary from pleasant to uncomfortable.
+    - Not intended as treatment for diagnosed conditions.
+
+  regulatory_notes:
+    - Practiced widely in private and wellness-oriented settings.
+
+
+kinesiologi:
+  description_notes:
+    - Combines elements from multiple alternative traditions.
+    - Often involves muscle testing as an exploratory tool.
+
+  evidence_notes:
+    - Limited and contested research base.
+    - Interpretations vary significantly between practitioners.
+
+  common_associations:
+    - exploratory self-understanding
+    - holistic frameworks
+
+  cautions:
+    - Muscle testing is not a diagnostic measurement.
+    - Can feel unfamiliar or confusing to some users.
+
+  regulatory_notes:
+    - Not part of conventional healthcare systems.
