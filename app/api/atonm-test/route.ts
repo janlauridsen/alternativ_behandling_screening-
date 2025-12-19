@@ -3,7 +3,7 @@ import { loadTreatments, Treatment } from "./loadTreatments";
 
 /**
  * ATONM – minimal test runtime (v1)
- * Purpose: Structured orientation and narrowing.
+ * Structured orientation and narrowing.
  * Non-diagnostic, non-advisory.
  */
 
@@ -127,17 +127,36 @@ export async function POST(req: Request) {
     });
   }
 
-  // Gem svar på forrige spørgsmål (Q1–Q5)
+  // 🔑 Q1 besvaret korrekt → gå direkte til Q2
+  if (state.step === 1 && isValidAnswer) {
+    state.answers["Q1"] = input!;
+    state.step = 2;
+
+    return NextResponse.json({
+      reply: QUESTIONS[2],
+      state,
+      done: false,
+    });
+  }
+
+  // Gem svar på Q2–Q5
   if (
     isValidAnswer &&
     typeof state.step === "number" &&
     state.step > 1 &&
-    state.step <= 6
+    state.step < 6
   ) {
-    state.answers[`Q${state.step - 1}`] = input!;
+    state.answers[`Q${state.step}`] = input!;
+    state.step = (state.step + 1) as Step;
+
+    return NextResponse.json({
+      reply: QUESTIONS[state.step],
+      state,
+      done: false,
+    });
   }
 
-  // Hvis Q6 besvares → afslut
+  // Q6 → afslut
   if (state.step === 6 && isValidAnswer) {
     state.answers["Q6"] = input!;
 
@@ -154,13 +173,10 @@ export async function POST(req: Request) {
     });
   }
 
-  // Ellers: næste spørgsmål
+  // Fallback (burde ikke rammes)
   return NextResponse.json({
     reply: QUESTIONS[state.step],
-    state: {
-      step: (state.step + 1) as Step,
-      answers: state.answers,
-    },
+    state,
     done: false,
   });
 }
