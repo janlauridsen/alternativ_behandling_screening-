@@ -1,0 +1,12 @@
+.testGrid {
+  display: block;
+}
+
+@media (min-width: 1100px) {
+  .testGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+}
