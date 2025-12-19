@@ -13,22 +13,31 @@ export default function Page() {
     >
       <h1>Intern prompt-test</h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "24px",
-          alignItems: "start",
-        }}
-      >
+      {/* Lokal CSS – kun til denne side */}
+      <style>{`
+        .test-grid {
+          display: block;
+        }
+
+        @media (min-width: 1100px) {
+          .test-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+          }
+        }
+      `}</style>
+
+      <div className="test-grid">
         {/* SYSTEMPROMPT */}
         <FoldoutText
           title="Systemprompt – fri samtale"
           preview="Test af generel samtaleadfærd og etiske grænser."
         >
           <p>
-            Test af den primære systemprompt uden strukturering eller indsnævring.
-            Samtalen er åben og formes alene af brugerinput.
+            Test af den primære systemprompt uden strukturering eller
+            indsnævring.
           </p>
 
           <p>
