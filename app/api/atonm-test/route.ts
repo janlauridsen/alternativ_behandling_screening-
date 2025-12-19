@@ -3,8 +3,8 @@ import { loadTreatments, Treatment } from "./loadTreatments";
 
 /**
  * ATONM – minimal test runtime (v1)
- * Purpose: Validate flow, questions, stop, and return control.
- * YAML-backed, non-diagnostic, non-advisory.
+ * Purpose: Structured orientation and narrowing.
+ * Non-diagnostic, non-advisory.
  */
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | "done";
@@ -94,8 +94,10 @@ export async function POST(req: Request) {
       ? rawInput.trim().toUpperCase().charAt(0)
       : undefined;
 
-  // Start ATONM hvis der ikke er input endnu
-  if (!input && state.step === 1) {
+  const isValidAnswer = input && ["A", "B", "C", "D"].includes(input);
+
+  // Start ATONM (ingen input endnu)
+  if (!rawInput && state.step === 1) {
     return NextResponse.json({
       reply: QUESTIONS[1],
       state,
@@ -114,19 +116,30 @@ export async function POST(req: Request) {
     });
   }
 
+  // Ugyldigt input → hjælpetekst
+  if (rawInput && !isValidAnswer) {
+    return NextResponse.json({
+      reply:
+        "Jeg kan kun bruge svar A, B, C eller D her.\n" +
+        "Skriv blot bogstavet, der passer bedst.",
+      state,
+      done: false,
+    });
+  }
+
   // Gem svar på forrige spørgsmål (Q1–Q5)
   if (
-    input &&
-    ["A", "B", "C", "D"].includes(input) &&
+    isValidAnswer &&
     typeof state.step === "number" &&
-    state.step > 1
+    state.step > 1 &&
+    state.step <= 6
   ) {
-    state.answers[`Q${state.step - 1}`] = input;
+    state.answers[`Q${state.step - 1}`] = input!;
   }
 
   // Hvis Q6 besvares → afslut
-  if (state.step === 6 && input && ["A", "B", "C", "D"].includes(input)) {
-    state.answers["Q6"] = input;
+  if (state.step === 6 && isValidAnswer) {
+    state.answers["Q6"] = input!;
 
     const treatments = loadTreatments();
     const narrowed = narrow(treatments, state.answers);
@@ -141,7 +154,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // Ellers: send næste spørgsmål
+  // Ellers: næste spørgsmål
   return NextResponse.json({
     reply: QUESTIONS[state.step],
     state: {
