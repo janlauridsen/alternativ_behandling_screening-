@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { atonmReducer } from "@/app/atonm/atonmReducer";
 import { loadTreatments } from "./loadTreatments";
-import { narrow } from "@/app/atonm/narrow";
+import { atonmReducer } from "../../atonm/atonmReducer";
+import { narrow } from "../../atonm/narrow";
+
 
 export async function POST(req: Request) {
   const { state, event } = await req.json();
