@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { loadTreatments } from "./loadTreatments";
 
 /**
  * ATONM – minimal test runtime (v1)
