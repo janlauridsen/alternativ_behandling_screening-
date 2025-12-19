@@ -1,0 +1,121 @@
+# ATONM – Treatment Metadata
+# Version: 1.0
+# Status: Active
+# Scope: Non-diagnostic, orientational use only
+# This file defines machine-usable characteristics.
+# It must not encode recommendations or outcome claims.
+
+- id: hypnoterapi
+  category: psyche_consciousness
+
+  focus_profile:
+    body: 1
+    mind: 4
+    energy_spiritual: 0
+    lifestyle_behavior: 0
+
+  interaction_style:
+    passive: 1
+    active: 2
+    dialog_based: 4
+
+  abstraction_level:
+    concrete: 2
+    interpretive: 3
+
+  practitioner_dependency: high
+
+  typical_use_case:
+    - situational
+    - general_support
+
+  evidence_orientation: medium
+
+  cost_level: medium
+
+
+- id: nada
+  category: body_regulation
+
+  focus_profile:
+    body: 4
+    mind: 1
+    energy_spiritual: 0
+    lifestyle_behavior: 0
+
+  interaction_style:
+    passive: 4
+    active: 1
+    dialog_based: 1
+
+  abstraction_level:
+    concrete: 4
+    interpretive: 0
+
+  practitioner_dependency: high
+
+  typical_use_case:
+    - situational
+    - general_support
+
+  evidence_orientation: experiential
+
+  cost_level: low
+
+
+- id: zoneterapi
+  category: body_regulation
+
+  focus_profile:
+    body: 4
+    mind: 1
+    energy_spiritual: 0
+    lifestyle_behavior: 0
+
+  interaction_style:
+    passive: 3
+    active: 1
+    dialog_based: 1
+
+  abstraction_level:
+    concrete: 3
+    interpretive: 1
+
+  practitioner_dependency: high
+
+  typical_use_case:
+    - general_support
+    - exploratory
+
+  evidence_orientation: low
+
+  cost_level: medium
+
+
+- id: kinesiologi
+  category: energy_holistic
+
+  focus_profile:
+    body: 2
+    mind: 2
+    energy_spiritual: 3
+    lifestyle_behavior: 0
+
+  interaction_style:
+    passive: 2
+    active: 2
+    dialog_based: 2
+
+  abstraction_level:
+    concrete: 1
+    interpretive: 4
+
+  practitioner_dependency: high
+
+  typical_use_case:
+    - exploratory
+    - existential
+
+  evidence_orientation: experiential
+
+  cost_level: medium
