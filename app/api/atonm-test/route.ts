@@ -7,14 +7,14 @@ import { loadTreatments, Treatment } from "./loadTreatments";
  * Non-diagnostic, non-advisory.
  */
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6 | "done";
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
 interface ATONMState {
   step: Step;
   answers: Record<string, string>;
 }
 
-const QUESTIONS: Record<1 | 2 | 3 | 4 | 5 | 6, string> = {
+const QUESTIONS: Record<Step, string> = {
   1: `Q1 – Hvordan oplever du det, du står i, overordnet?
 A. Mest kropsligt
 B. Mest mentalt eller følelsesmæssigt
@@ -94,30 +94,19 @@ export async function POST(req: Request) {
       ? rawInput.trim().toUpperCase().charAt(0)
       : undefined;
 
-  const isValidAnswer = input && ["A", "B", "C", "D"].includes(input);
+  const isValid = input && ["A", "B", "C", "D"].includes(input);
 
-  // Start ATONM (ingen input endnu)
-  if (!rawInput && state.step === 1) {
+  // Start: ingen input endnu
+  if (!rawInput) {
     return NextResponse.json({
-      reply: QUESTIONS[1],
+      reply: QUESTIONS[state.step],
       state,
       done: false,
     });
   }
 
-  // Allerede afsluttet
-  if (state.step === "done") {
-    return NextResponse.json({
-      reply:
-        "ATONM er afsluttet.\n\n" +
-        "Dette var en struktureret orienteringstest.\n" +
-        "Ingen anbefaling er givet.",
-      done: true,
-    });
-  }
-
-  // Ugyldigt input → hjælpetekst
-  if (rawInput && !isValidAnswer) {
+  // Ugyldigt input
+  if (!isValid) {
     return NextResponse.json({
       reply:
         "Jeg kan kun bruge svar A, B, C eller D her.\n" +
@@ -127,39 +116,11 @@ export async function POST(req: Request) {
     });
   }
 
-  // 🔑 Q1 besvaret korrekt → gå direkte til Q2
-  if (state.step === 1 && isValidAnswer) {
-    state.answers["Q1"] = input!;
-    state.step = 2;
+  // Gem svar på aktuelt spørgsmål
+  state.answers[`Q${state.step}`] = input;
 
-    return NextResponse.json({
-      reply: QUESTIONS[2],
-      state,
-      done: false,
-    });
-  }
-
-  // Gem svar på Q2–Q5
-  if (
-    isValidAnswer &&
-    typeof state.step === "number" &&
-    state.step > 1 &&
-    state.step < 6
-  ) {
-    state.answers[`Q${state.step}`] = input!;
-    state.step = (state.step + 1) as Step;
-
-    return NextResponse.json({
-      reply: QUESTIONS[state.step],
-      state,
-      done: false,
-    });
-  }
-
-  // Q6 → afslut
-  if (state.step === 6 && isValidAnswer) {
-    state.answers["Q6"] = input!;
-
+  // Hvis sidste spørgsmål → afslut
+  if (state.step === 6) {
     const treatments = loadTreatments();
     const narrowed = narrow(treatments, state.answers);
 
@@ -173,7 +134,9 @@ export async function POST(req: Request) {
     });
   }
 
-  // Fallback (burde ikke rammes)
+  // Ellers → næste spørgsmål
+  state.step = (state.step + 1) as Step;
+
   return NextResponse.json({
     reply: QUESTIONS[state.step],
     state,
