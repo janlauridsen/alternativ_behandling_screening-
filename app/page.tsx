@@ -32,20 +32,19 @@ export default function Page() {
           </p>
         </FoldoutText>
 
-        {/* ATONM – korrekt test */}
+        {/* ATONM – orientering (UI midlertidigt fjernet) */}
         <FoldoutText
           title="ATONM – orientering og indsnævring"
-          preview="Struktureret test af ATONM som state-machine."
+          preview="Struktureret orienteringsmodel (UI midlertidigt deaktiveret)."
         >
           <p>
-            Denne test anvender ATONM som et event-baseret
+            ATONM anvendes som et deterministisk, ikke-diagnostisk
             orienteringsmodul.
           </p>
           <p>
-            Ingen fri tekst. Ingen tolkning. Kun faste valg og
-            deterministisk flow.
+            Selve brugerinterfacet er midlertidigt fjernet i v3.1 som led
+            i arkitektonisk konsolidering.
           </p>
-
         </FoldoutText>
       </div>
     </main>
