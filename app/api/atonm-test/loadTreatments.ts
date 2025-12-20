@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 
-// Type A v3.1 – runtime shape
 export type Treatment = {
   id: string;
   experienceOrientation: "body" | "mind" | "mixed" | "abstract";
@@ -27,9 +26,12 @@ export function loadTreatments(): Treatment[] {
   const raw = fs.readFileSync(filePath, "utf8");
   const parsed = YAML.parse(raw);
 
-  if (!Array.isArray(parsed)) {
-    throw new Error("Expected treatments.yaml to contain an array");
+  if (typeof parsed !== "object" || Array.isArray(parsed) || parsed === null) {
+    throw new Error("Expected treatments.yaml to be an object map");
   }
 
-  return parsed as Treatment[];
+  return Object.entries(parsed).map(([id, value]) => ({
+    id,
+    ...(value as Omit<Treatment, "id">),
+  }));
 }
