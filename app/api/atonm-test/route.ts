@@ -15,22 +15,33 @@ import { renderMethodText } from "../../../lib/atonm/renderMethodText";
  * - Non-advisory, template-based output
  */
 
+type AnswerKey = "Q1" | "Q2" | "Q3" | "Q4" | "Q5" | "Q6";
+
 type ATONMState = {
   index: number;
-  answers: Record<string, number>;
+  answers: Partial<Record<AnswerKey, number>>;
   done: boolean;
+};
+
+type StartEvent = { type: "START" };
+type AnswerEvent = { type: "ANSWER"; value: number };
+
+type RequestBody = {
+  state?: ATONMState;
+  event?: StartEvent | AnswerEvent;
+  intakeText?: string;
 };
 
 const FINAL_STEP = 6;
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const body = (await req.json()) as RequestBody;
   const { state, event, intakeText } = body;
 
   // ---------- INIT ----------
   if (event?.type === "START") {
     const newState: ATONMState = {
-      index: state?.index ?? 0,
+      index: 0,
       answers: {},
       done: false,
     };
@@ -47,9 +58,11 @@ export async function POST(req: Request) {
 
   // ---------- ANSWER ----------
   if (event?.type === "ANSWER") {
-    const newAnswers = {
+    const answerKey = `Q${state.index + 1}` as AnswerKey;
+
+    const newAnswers: ATONMState["answers"] = {
       ...state.answers,
-      [`Q${state.index + 1}`]: event.value,
+      [answerKey]: event.value,
     };
 
     const nextIndex = state.index + 1;
