@@ -6,11 +6,17 @@ export default function Page() {
       style={{
         maxWidth: "1200px",
         margin: "40px auto",
-        fontFamily: "sans-serif",
         padding: "0 16px",
+        fontFamily: "system-ui, sans-serif",
       }}
     >
-      <h1>Intern test</h1>
+      <h1>ATONM – intern test & debug</h1>
+
+      <p style={{ maxWidth: "800px", opacity: 0.8 }}>
+        Denne side anvendes udelukkende til intern test, validering og
+        fejlsøgning af ATONM v3.1.  
+        Fokus er korrekthed, determinisme og sammenhæng – ikke brugeroplevelse.
+      </p>
 
       <div
         style={{
@@ -18,35 +24,62 @@ export default function Page() {
           gridTemplateColumns: "1fr 1fr",
           gap: "24px",
           alignItems: "start",
+          marginTop: "32px",
         }}
       >
-        {/* SYSTEMPROMPT – fri chat */}
+        {/* ATONM */}
         <FoldoutText
-          title="Systemprompt – fri samtale"
-          preview="Test af generel samtaleadfærd og etiske grænser."
+          title="ATONM – orientering & indsnævring"
+          preview="Deterministisk, ikke-diagnostisk orienteringsmodel (v3.1)"
         >
-          <p>Denne test er til fri tekstbaseret dialog.</p>
           <p>
-            Ingen struktur, ingen indsnævring. Bruges kun til at vurdere
-            tone, afgrænsning og etik.
+            ATONM anvendes her som et struktureret orienteringsmodul baseret på
+            faste spørgsmål og monotonic narrowing.
+          </p>
+          <p>
+            UI til ATONM er i øjeblikket under genopbygning med fokus på
+            testbarhed og observability.
+          </p>
+          <p style={{ opacity: 0.7 }}>
+            Runtime testes via API (<code>/api/atonm-test</code>) og
+            dokumenteret output.
           </p>
         </FoldoutText>
 
-        {/* ATONM – orientering (UI midlertidigt fjernet) */}
+        {/* HANDOFF / LLM */}
         <FoldoutText
-          title="ATONM – orientering og indsnævring"
-          preview="Struktureret orienteringsmodel (UI midlertidigt deaktiveret)."
+          title="LLM & handoff"
+          preview="Overgang fra ATONM-orientering til samtale"
         >
           <p>
-            ATONM anvendes som et deterministisk, ikke-diagnostisk
-            orienteringsmodul.
+            Handoff-chatten tester overgangen fra et afsluttet ATONM-forløb til
+            fri samtale med bevaret kontekst.
           </p>
           <p>
-            Selve brugerinterfacet er midlertidigt fjernet i v3.1 som led
-            i arkitektonisk konsolidering.
+            Fokus er:
+          </p>
+          <ul>
+            <li>korrekt brug af systemprompt</li>
+            <li>ingen genåbning af indsnævring</li>
+            <li>ingen rådgivning eller anbefaling</li>
+          </ul>
+          <p style={{ opacity: 0.7 }}>
+            Endpoint: <code>/api/handoff-chat</code>
           </p>
         </FoldoutText>
       </div>
+
+      <hr style={{ margin: "48px 0", opacity: 0.3 }} />
+
+      <section style={{ maxWidth: "800px" }}>
+        <h2>Status</h2>
+        <ul>
+          <li>ATONM: v3.1 (locked)</li>
+          <li>Model: Type A (deskriptiv)</li>
+          <li>UI: intern / under opbygning</li>
+          <li>Formål: funktionel validering & fail-fast</li>
+        </ul>
+      </section>
     </main>
   );
 }
