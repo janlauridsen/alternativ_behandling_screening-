@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { QUESTIONS } from "../atonm/questions";
+import TestBox from "./TestBox";
 
 type ATONMState = {
   index: number;
@@ -25,26 +26,20 @@ export default function ATONMTester() {
   const [handoffContext, setHandoffContext] = useState<any>(null);
   const [handoffReply, setHandoffReply] = useState<string | null>(null);
 
-  // ---------- helpers ----------
-
   function decideStartIndex(text: string): number {
     const t = text.toLowerCase();
-    if (
-      t.includes("fly") ||
-      t.includes("eksamen") ||
-      t.includes("præsentation")
-    ) {
+    if (t.includes("fly") || t.includes("eksamen") || t.includes("præsentation")) {
       return 2; // Q3
     }
-    return 0; // Q1 default
+    return 0; // Q1
   }
 
   function resetAll() {
     setPhase("intake");
     setIntakeText("");
     setState(null);
-    setResult(null);
     setRemainingCount(null);
+    setResult(null);
     setHandoffContext(null);
     setHandoffReply(null);
   }
@@ -53,11 +48,7 @@ export default function ATONMTester() {
     const res = await fetch("/api/atonm-test", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        state,
-        event,
-        intakeText,
-      }),
+      body: JSON.stringify({ state, event, intakeText }),
     });
 
     const data = await res.json();
@@ -70,8 +61,9 @@ export default function ATONMTester() {
     }
 
     if (data.state) setState(data.state);
-    if (typeof data.remainingCount === "number")
+    if (typeof data.remainingCount === "number") {
       setRemainingCount(data.remainingCount);
+    }
   }
 
   async function startHandoff() {
@@ -87,31 +79,28 @@ export default function ATONMTester() {
     setHandoffReply(data.reply);
   }
 
-  // ---------- UI ----------
-
   const RestartButton = (
     <button onClick={resetAll} style={{ marginBottom: "16px" }}>
       🔁 Start ATONM forfra
     </button>
   );
 
-  // ---------- OPEN INTAKE ----------
+  /* ---------------- OPEN INTAKE ---------------- */
+
   if (phase === "intake") {
     return (
       <div>
         {RestartButton}
 
         <p>
-          Hvis du har lyst, kan du kort beskrive, hvad der fylder mest for dig
-          lige nu. Det bruges kun til at afgøre, hvilket afklarende spørgsmål vi
-          starter med.
+          Hvis du vil, kan du kort beskrive, hvad der fylder mest for dig lige nu.
+          Det bruges kun til at afgøre, hvilket afklarende spørgsmål vi starter med.
         </p>
 
         <textarea
           rows={3}
           value={intakeText}
           onChange={(e) => setIntakeText(e.target.value)}
-          placeholder="(valgfrit – 1–2 sætninger)"
           style={{ width: "100%", marginBottom: "12px" }}
         />
 
@@ -128,7 +117,8 @@ export default function ATONMTester() {
     );
   }
 
-  // ---------- ATONM FLOW ----------
+  /* ---------------- ATONM FLOW ---------------- */
+
   if (phase === "atonm" && state) {
     const q = QUESTIONS[state.index];
 
@@ -139,17 +129,14 @@ export default function ATONMTester() {
         <h3>{q.text}</h3>
 
         {remainingCount !== null && (
-          <p style={{ fontSize: "0.9em", opacity: 0.7 }}>
+          <p style={{ opacity: 0.7 }}>
             Mulige behandlingsformer tilbage: {remainingCount}
           </p>
         )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           {q.options.map((o, i) => (
-            <button
-              key={i}
-              onClick={() => send({ type: "ANSWER", value: i })}
-            >
+            <button key={i} onClick={() => send({ type: "ANSWER", value: i })}>
               {o}
             </button>
           ))}
@@ -158,7 +145,8 @@ export default function ATONMTester() {
     );
   }
 
-  // ---------- ATONM SLUT ----------
+  /* ---------------- ATONM SLUT ---------------- */
+
   if (phase === "finished" && result) {
     return (
       <div>
@@ -166,13 +154,11 @@ export default function ATONMTester() {
 
         <h3>Overblik over mulige retninger</h3>
 
-        <ul style={{ paddingLeft: "16px" }}>
+        <ul>
           {result.map((r) => (
             <li key={r.id} style={{ marginBottom: "16px" }}>
               <strong>{r.id}</strong>
-              <div style={{ whiteSpace: "pre-line", marginTop: "6px" }}>
-                {r.text}
-              </div>
+              <div style={{ whiteSpace: "pre-line" }}>{r.text}</div>
             </li>
           ))}
         </ul>
@@ -181,21 +167,32 @@ export default function ATONMTester() {
           <em>Dette er ikke en anbefaling.</em>
         </p>
 
-        <button onClick={startHandoff}>
-          Jeg vil gerne vide mere
-        </button>
+        <button onClick={startHandoff}>Jeg vil gerne vide mere</button>
       </div>
     );
   }
 
-  // ---------- GENEREL SAMTALE (handoff) ----------
+  /* ---------------- HANDOFF → FRI SAMTALE ---------------- */
+
   if (phase === "handoff") {
     return (
       <div>
         {RestartButton}
 
         {handoffReply ? (
-          <div style={{ whiteSpace: "pre-line" }}>{handoffReply}</div>
+          <>
+            <div style={{ whiteSpace: "pre-line", marginBottom: "16px" }}>
+              {handoffReply}
+            </div>
+
+            <TestBox
+              endpoint="/api/prompt-test"
+              initialSystemContext={{
+                source: "ATONM",
+                handoffContext,
+              }}
+            />
+          </>
         ) : (
           <p>Indlæser …</p>
         )}
