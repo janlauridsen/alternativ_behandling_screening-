@@ -9,7 +9,7 @@ const client = new OpenAI({
 
 // Indlæs eksisterende systemprompt
 const SYSTEM_PROMPT = fs.readFileSync(
-  path.join(process.cwd(), "docs/runtime/system-prompt-v1.txt"),
+  path.join(process.cwd(), "docs/runtime/system-prompt-v2.txt"),
   "utf8"
 );
 
