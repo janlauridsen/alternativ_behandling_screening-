@@ -2,7 +2,8 @@
 // ATONM v3.1 – monotonic narrowing
 // Status: Active · Heuristikfri · Ikke-rangerende
 
-import type { Treatment } from "../api/atonm-data/loadTreatments";
+import type { Treatment } from "./types";
+
 
 export function narrow(
   treatments: Treatment[],
