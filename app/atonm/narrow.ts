@@ -10,41 +10,31 @@ export function narrow(
 ): Treatment[] {
   let result = [...treatments];
 
-  // Q1 – oplevelsesorientering (kropsligt / mentalt / blandet / uklart)
+  // Q1 – oplevelsesorientering
   if (answers.Q1 === 0) {
-    // Mest kropsligt
     result = result.filter((t) => t.experienceOrientation === "body");
   }
-
   if (answers.Q1 === 1) {
-    // Mest mentalt
     result = result.filter((t) => t.experienceOrientation === "mind");
   }
 
-  // Q2 – situationsmønster (situational / recurring / long_term)
+  // Q2 – situationsmønster
   if (answers.Q2 === 0) {
-    // Knyttet til en situation
     result = result.filter((t) => t.temporalStructure === "bounded");
   }
-
   if (answers.Q2 === 2 || answers.Q2 === 3) {
-    // Vender tilbage / har stået på i lang tid
     result = result.filter((t) => t.temporalStructure !== "bounded");
   }
 
-  // Q3 – arbejdsform (kropsligt / samtale / helhedsorienteret / ingen præference)
-  // Bevidst adskilt fra Q1: handler om *hvordan* der arbejdes
+  // Q3 – arbejdsform (adskilt fra Q1)
   if (answers.Q3 === 0) {
-    // Kropsligt arbejde
     result = result.filter(
       (t) =>
         t.experienceOrientation === "body" ||
         t.interactionForm === "active"
     );
   }
-
   if (answers.Q3 === 1) {
-    // Samtale / refleksion
     result = result.filter(
       (t) =>
         t.experienceOrientation === "mind" ||
@@ -52,31 +42,23 @@ export function narrow(
     );
   }
 
-  // Q4 – deltagelsesform (aktiv / balance / guidet / ingen præference)
+  // Q4 – deltagelsesform
   if (answers.Q4 === 0) {
-    // Jeg er selv aktiv
     result = result.filter((t) => t.interactionForm === "active");
   }
-
   if (answers.Q4 === 2) {
-    // Jeg bliver guidet
     result = result.filter((t) => t.guidanceLevel === "practitioner_led");
   }
 
-  // Q5 – forklaringsramme / abstraktion
+  // Q5 – forklaringsramme
   if (answers.Q5 === 0) {
-    // Forklaringsramme er vigtig
     result = result.filter((t) => t.abstractionLevel !== "concrete");
   }
-
   if (answers.Q5 === 2) {
-    // Forklaringsramme er ikke vigtig
     result = result.filter((t) => t.abstractionLevel === "concrete");
   }
 
-  // Q6 – begrænsninger
-  // Bevidst ingen filtrering i v3.1
-  // (økonomi/tid må ikke påvirke metodeudvalg)
+  // Q6 – bevidst ingen filtrering i v3.1
 
   return result;
 }
