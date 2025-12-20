@@ -1,8 +1,4 @@
-// app/api/atonm-data/loadTreatments.ts
-
 import YAML from "yaml";
-import type { Treatment } from "../../atonm/types";
-
 
 // Type A v3.1 – runtime shape
 export type Treatment = {
@@ -17,6 +13,15 @@ export type Treatment = {
   physicalContact: "none" | "light" | "direct";
 };
 
+// treatmentsRaw skal være en YAML-string (importeret eller defineret)
+import treatmentsRaw from "./treatments.yaml";
+
 export function loadTreatments(): Treatment[] {
-  return YAML.parse(treatmentsRaw as string);
+  const parsed = YAML.parse(treatmentsRaw);
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("Expected treatments YAML to be an array");
+  }
+
+  return parsed as Treatment[];
 }
