@@ -1,7 +1,7 @@
 // app/api/atonm-data/loadTreatments.ts
 
 import YAML from "yaml";
-import treatmentsRaw from "./treatments.yaml";
+import treatmentsRaw from "../atonm-data/treatments.yaml";
 
 // Type A v3.1 – runtime shape
 export type Treatment = {
