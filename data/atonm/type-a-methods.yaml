@@ -1,0 +1,125 @@
+# data/atonm/type-a-methods.yaml
+
+# Status: Normativ · låst
+
+# Indeholder udelukkende Type A-kendetegn for metoder anvendt i ATONM
+
+hypnoterapi:
+experienceOrientation: mind
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: mixed
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: bounded
+physicalContact: none
+
+zoneterapi:
+experienceOrientation: body
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: concrete
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: recurring
+physicalContact: direct
+
+healing:
+experienceOrientation: abstract
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: interpretive
+structuringDegree: open
+practitionerDependency: high
+temporalStructure: bounded
+physicalContact: light
+
+massage:
+experienceOrientation: body
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: concrete
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: recurring
+physicalContact: direct
+
+akupunktur:
+experienceOrientation: body
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: mixed
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: recurring
+physicalContact: direct
+
+nada:
+experienceOrientation: body
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: concrete
+structuringDegree: fixed
+practitionerDependency: medium
+temporalStructure: recurring
+physicalContact: light
+
+mindfulness:
+experienceOrientation: mind
+interactionForm: active
+guidanceLevel: shared
+abstractionLevel: concrete
+structuringDegree: semi_structured
+practitionerDependency: low
+temporalStructure: ongoing
+physicalContact: none
+
+kropsterapi:
+experienceOrientation: body
+interactionForm: mixed
+guidanceLevel: practitioner_led
+abstractionLevel: mixed
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: recurring
+physicalContact: direct
+
+kinesiologi:
+experienceOrientation: mixed
+interactionForm: mixed
+guidanceLevel: practitioner_led
+abstractionLevel: interpretive
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: bounded
+physicalContact: light
+
+kraniosakral_terapi:
+experienceOrientation: body
+interactionForm: passive
+guidanceLevel: practitioner_led
+abstractionLevel: mixed
+structuringDegree: semi_structured
+practitionerDependency: high
+temporalStructure: recurring
+physicalContact: light
+
+yoga_terapeutisk:
+experienceOrientation: body
+interactionForm: active
+guidanceLevel: shared
+abstractionLevel: concrete
+structuringDegree: semi_structured
+practitionerDependency: low
+temporalStructure: ongoing
+physicalContact: none
+
+andedraetsbaseret_terapi:
+experienceOrientation: mixed
+interactionForm: active
+guidanceLevel: shared
+abstractionLevel: mixed
+structuringDegree: semi_structured
+practitionerDependency: medium
+temporalStructure: bounded
+physicalContact: none
