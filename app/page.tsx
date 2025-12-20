@@ -1,4 +1,3 @@
-import ATONMTester from "./components/ATONMTester";
 import FoldoutText from "./components/FoldoutText";
 
 export default function Page() {
@@ -47,7 +46,6 @@ export default function Page() {
             deterministisk flow.
           </p>
 
-          <ATONMTester />
         </FoldoutText>
       </div>
     </main>
