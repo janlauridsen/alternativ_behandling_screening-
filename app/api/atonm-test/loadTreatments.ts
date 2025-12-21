@@ -1,5 +1,5 @@
 // app/api/atonm-test/loadTreatments.ts
-// Loader Type A-metodedata (YAML) til runtime
+// Loader Type A-metodedata (YAML) til ATONM runtime
 
 import fs from "fs";
 import path from "path";
@@ -9,7 +9,7 @@ import type { Treatment } from "../../../lib/atonm/types";
 export function loadTreatments(): Treatment[] {
   const filePath = path.join(
     process.cwd(),
-    "app/api/atonm-data/type-a-methods.yaml"
+    "app/api/atonm-data/treatments.yaml"
   );
 
   const raw = fs.readFileSync(filePath, "utf8");
