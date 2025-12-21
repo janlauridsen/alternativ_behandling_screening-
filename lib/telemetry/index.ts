@@ -1,8 +1,16 @@
 // lib/telemetry/index.ts
-// Status: Central entrypoint
+// Public API with feature-flag
 
-import { noopTelemetry } from "./noop"
-import type { TelemetryClient } from "./types"
+import type { TelemetryEvent } from "./types";
+import { sendTelemetry as noop } from "./noop";
 
-// Senere kan dette skiftes baseret på env / config
-export const telemetry: TelemetryClient = noopTelemetry
+const ENABLED = process.env.NEXT_PUBLIC_TELEMETRY_ENABLED === "true";
+
+export function track(event: TelemetryEvent): void {
+  if (!ENABLED) {
+    return;
+  }
+
+  // future: swap sink here
+  noop(event);
+}
