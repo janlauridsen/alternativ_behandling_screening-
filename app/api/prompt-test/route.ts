@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 
+import { guardAllInput } from "../../../lib/guards/guardAllInput";
 import { evaluateGuards } from "../../../lib/guards/evaluate";
 import { respond } from "../../../lib/guards/respond";
 
@@ -19,6 +20,15 @@ const SYSTEM_PROMPT = fs.readFileSync(
 
 export async function POST(req: Request) {
   const body = await req.json();
+
+  // ---------- GLOBAL INPUT SAFETY (PERMANENT) ----------
+  // No user-provided string may pass beyond this point unscreened
+  const blocked = await guardAllInput(body);
+  if (blocked) {
+    return NextResponse.json({ reply: blocked });
+  }
+  // ---------- END GLOBAL SAFETY ----------
+
   const { message } = body;
 
   if (!message || typeof message !== "string") {
@@ -28,7 +38,8 @@ export async function POST(req: Request) {
     );
   }
 
-  // ---------- INPUT GUARDS (v3.5) ----------
+  // ---------- INPUT GUARDS (EXPLICIT, v3.5) ----------
+  // Redundant by design – guarantees message safety even if body shape changes
   const guard = await evaluateGuards(message);
 
   if (guard) {
