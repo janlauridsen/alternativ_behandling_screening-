@@ -1,5 +1,7 @@
-// lib/guards/evaluate.ts
+// File: lib/atonm/guards/evaluate.ts
 // Minimal guard evaluation – v1.1 (tone support)
+
+import { SafetyGate } from "../safety/SafetyGate";
 
 export type GuardType =
   | "crisis"
@@ -9,6 +11,12 @@ export type GuardType =
   | null;
 
 export function evaluateGuards(input: string): GuardType {
+  // --- ATONM v3.5 ---
+  // SafetyGate is called, but result is intentionally ignored in Trin 2.
+  // This guarantees zero behavior change while wiring is validated.
+  SafetyGate.classify(input);
+  // --- end v3.5 wiring ---
+
   const t = input.toLowerCase();
 
   // Krise
