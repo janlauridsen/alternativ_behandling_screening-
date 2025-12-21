@@ -14,6 +14,7 @@ type ATONMState = {
 };
 
 export default function ATONMDebug() {
+  const [intakeText, setIntakeText] = useState("");
   const [state, setState] = useState<ATONMState | null>(null);
   const [remainingCount, setRemainingCount] = useState<number | null>(null);
   const [profileText, setProfileText] = useState<string[] | null>(null);
@@ -24,7 +25,7 @@ export default function ATONMDebug() {
     const res = await fetch("/api/atonm-test", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ state, event }),
+      body: JSON.stringify({ state, event, intakeText }),
     });
 
     const data = await res.json();
@@ -44,6 +45,7 @@ export default function ATONMDebug() {
   }
 
   function reset() {
+    setIntakeText("");
     setState(null);
     setRemainingCount(null);
     setProfileText(null);
@@ -54,6 +56,22 @@ export default function ATONMDebug() {
   return (
     <div style={{ marginTop: 24 }}>
       <h3>ATONM Debug UI</h3>
+
+      {!state && !profileText && (
+        <div>
+          <p>
+            Før vi starter, kan du – hvis du vil – kort beskrive, hvad der fylder
+            mest for dig lige nu.
+          </p>
+          <textarea
+            rows={3}
+            value={intakeText}
+            onChange={(e) => setIntakeText(e.target.value)}
+            placeholder="Skriv frit her (valgfrit)"
+            style={{ width: "100%", marginBottom: 8 }}
+          />
+        </div>
+      )}
 
       <button onClick={reset}>Reset</button>{" "}
       <button onClick={() => send({ type: "START" })}>Start</button>
