@@ -3,6 +3,7 @@
 import { NextResponse } from "next/server";
 import { narrow } from "../../atonm/narrow";
 import { loadTreatments } from "./loadTreatments";
+import { QUESTIONS } from "../../atonm/questions";
 import { deriveHypotheticalUserProfile } from "../../../lib/atonm/deriveHypotheticalProfile";
 import { renderHypotheticalProfileText } from "../../../lib/atonm/renderProfileText";
 import { renderMethodText } from "../../../lib/atonm/renderMethodText";
@@ -33,6 +34,29 @@ type RequestBody = {
 };
 
 const FINAL_STEP = 6;
+
+/* -------------------------------------------------- */
+/* --------- ANSWER LABEL MAPPING (RUNTIME) ---------- */
+/* -------------------------------------------------- */
+
+function mapAnswersToOptionStrings(
+  answers: Partial<Record<AnswerKey, number>>
+): Record<string, string> {
+  const result: Record<string, string> = {};
+
+  for (const q of QUESTIONS) {
+    const idx = answers[q.id as AnswerKey];
+    if (typeof idx === "number" && q.options[idx] !== undefined) {
+      result[q.id] = q.options[idx];
+    }
+  }
+
+  return result;
+}
+
+/* -------------------------------------------------- */
+/* -------------------- ROUTE ----------------------- */
+/* -------------------------------------------------- */
 
 export async function POST(req: Request) {
   const body = (await req.json()) as RequestBody;
@@ -71,7 +95,9 @@ export async function POST(req: Request) {
 
     // ---------- FINAL ----------
     if (nextIndex >= FINAL_STEP) {
-      const profile = deriveHypotheticalUserProfile(newAnswers);
+      const labeledAnswers = mapAnswersToOptionStrings(newAnswers);
+
+      const profile = deriveHypotheticalUserProfile(labeledAnswers);
       const profileText = renderHypotheticalProfileText(profile);
 
       const synthesis = narrowed.map((t) => {
@@ -87,7 +113,7 @@ export async function POST(req: Request) {
         result: synthesis,
         handoffContext: {
           intakeText,
-          answers: newAnswers,
+          answers: labeledAnswers,
           remainingTreatments: narrowed.map((t) => t.id),
         },
       });
