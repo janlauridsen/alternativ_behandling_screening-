@@ -1,5 +1,7 @@
 // File: lib/atonm/safety/SafetyGate.ts
-// ATONM v3.5 – SafetyGate (Trin 4: strict pre-checks, no AI yet)
+// ATONM v3.5 – SafetyGate (Trin 5: AI-backed classification)
+
+import { classifyWithAI } from "./aiClassifier";
 
 export type SafetyClassification =
   | "SAFE"
@@ -7,45 +9,23 @@ export type SafetyClassification =
   | "DESTRUCTIVE"
   | "SEXUAL"
   | "ILLEGAL"
-  | "UNKNOWN"
+  | "UNKNOWN";
 
 export type SafetyResult = {
-  classification: SafetyClassification
-  reason?: string // internal only, never exposed, never used for branching
-}
+  classification: SafetyClassification;
+  reason?: string;
+};
 
 export class SafetyGate {
-  /**
-   * Central safety classifier.
-   *
-   * Trin 4 behavior:
-   * - Non-string → UNKNOWN
-   * - Empty / whitespace-only → UNKNOWN
-   * - No AI yet (SAFE by default otherwise)
-   */
-  static classify(input: string): SafetyResult {
-    // Non-string input
+  static async classify(input: string): Promise<SafetyResult> {
     if (typeof input !== "string") {
-      return {
-        classification: "UNKNOWN",
-        reason: "non-string input"
-      }
+      return { classification: "UNKNOWN", reason: "non-string input" };
     }
 
-    // Empty or whitespace-only input
     if (input.trim().length === 0) {
-      return {
-        classification: "UNKNOWN",
-        reason: "empty or whitespace input"
-      }
+      return { classification: "UNKNOWN", reason: "empty input" };
     }
 
-    // NOTE:
-    // AI-based classification will be introduced in Trin 5.
-    // Until then, all valid strings are considered SAFE.
-
-    return {
-      classification: "SAFE"
-    }
+    return classifyWithAI(input);
   }
 }
