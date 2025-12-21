@@ -9,6 +9,7 @@ import { QUESTIONS } from "../../../lib/atonm/questions";
 import { deriveHypotheticalUserProfile } from "../../../lib/atonm/deriveHypotheticalProfile";
 import { renderHypotheticalProfileText } from "../../../lib/atonm/renderProfileText";
 import { renderMethodText } from "../../../lib/atonm/renderMethodText";
+import { guardAllInput } from "../../../lib/guards/guardAllInput";
 
 type AnswerKey = "Q1" | "Q2" | "Q3" | "Q4" | "Q5" | "Q6";
 
@@ -41,6 +42,18 @@ function mapAnswersToOptionStrings(
 
 export async function POST(req: Request) {
   const body = (await req.json()) as RequestBody;
+
+  // ---------- GLOBAL INPUT SAFETY (PERMANENT) ----------
+  // No user-provided string may pass beyond this point unscreened
+  const blocked = await guardAllInput(body);
+  if (blocked) {
+    return NextResponse.json({
+      done: true,
+      reply: blocked,
+    });
+  }
+  // ---------- END GLOBAL SAFETY ----------
+
   const { state, event, intakeText } = body;
 
   if (event?.type === "START") {
