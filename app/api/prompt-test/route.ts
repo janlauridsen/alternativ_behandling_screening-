@@ -9,11 +9,11 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Systemprompt – generel samtale (fælles runtime-ramme)
 const SYSTEM_PROMPT = fs.readFileSync(
-  path.join(process.cwd(), "docs/runtime/system-prompt-v2.txt"),
+  path.join(process.cwd(), "docs/atonm/runtime/system-prompt-v2.txt"),
   "utf8"
 );
+
 
 // ATONM handoff-kontekst (v3.1 – konsistent med handoff-chat)
 const ATONM_CONTEXT_INSTRUCTION = `
