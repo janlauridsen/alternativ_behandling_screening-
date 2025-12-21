@@ -1,8 +1,13 @@
 // lib/guards/respond.ts
 // Guard responses – short, neutral, terminating
 
-export function respond(type: "do_not" | "terminate" | "crisis"): string {
+export function respond(
+  type: "do_not" | "terminate" | "crisis" | "humor"
+): string {
   switch (type) {
+    case "humor":
+      return "🙂";
+
     case "crisis":
       return (
         "Jeg kan ikke hjælpe med dette her.\n\n" +
