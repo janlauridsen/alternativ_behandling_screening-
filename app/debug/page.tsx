@@ -1,5 +1,5 @@
 // app/debug/page.tsx
-// Status: Intern debug-side · observability only
+// Status: Intern debug-side · udvidet observability
 
 "use client"
 
@@ -18,9 +18,14 @@ export default function DebugPage() {
     })
 
     const data = await res.json()
+
     setState({
       phase: "atonm",
-      ...data.state,
+      intakeText: data.intakeText,
+      answers: data.state?.answers,
+      remainingTreatments: data.handoffContext?.remainingTreatments,
+      profile: data.profile,
+      locked: false,
     })
   }
 
@@ -28,9 +33,7 @@ export default function DebugPage() {
     <main style={{ padding: "24px", fontFamily: "system-ui, sans-serif" }}>
       <h1>ATONM Debug</h1>
 
-      <button onClick={startATONM}>
-        Start ATONM (debug)
-      </button>
+      <button onClick={startATONM}>Start ATONM (debug)</button>
 
       <h3 style={{ marginTop: "24px" }}>State snapshot</h3>
       <StatePanel state={state} />
