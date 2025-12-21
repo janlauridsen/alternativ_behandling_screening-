@@ -1,4 +1,5 @@
 // lib/guards/index.ts
-// Status: Re-export
+// Status: Central re-export
 
 export * from "./do-not"
+export * from "./crisis-dk"
