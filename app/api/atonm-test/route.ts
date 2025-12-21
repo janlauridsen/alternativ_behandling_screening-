@@ -3,9 +3,9 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { narrow } from "../../atonm/narrow";
+import { narrow } from "../../../lib/atonm/narrow";
 import { loadTreatments } from "./loadTreatments";
-import { QUESTIONS } from "../../atonm/questions";
+import { QUESTIONS } from "../../../lib/atonm/questions";
 import { deriveHypotheticalUserProfile } from "../../../lib/atonm/deriveHypotheticalProfile";
 import { renderHypotheticalProfileText } from "../../../lib/atonm/renderProfileText";
 import { renderMethodText } from "../../../lib/atonm/renderMethodText";
