@@ -1,32 +1,21 @@
 // lib/telemetry/types.ts
-// Status: Kontrakt · ingen runtime-logik
+// Telemetry v1 – types only (no side effects)
 
-export type TelemetryEvent =
-  | {
-      type: "session_start"
-      timestamp: number
-    }
-  | {
-      type: "atonm_answer"
-      questionId: string
-      value: string
-      timestamp: number
-    }
-  | {
-      type: "atonm_complete"
-      remainingTreatments: string[]
-      timestamp: number
-    }
-  | {
-      type: "handoff_start"
-      timestamp: number
-    }
-  | {
-      type: "out_of_scope"
-      reason: string
-      timestamp: number
-    }
+export type TelemetryEventName =
+  | "flow_started"
+  | "atonm_completed"
+  | "validation_adjusted"
+  | "handoff_started"
+  | "guard_triggered";
 
-export type TelemetryClient = {
-  track(event: TelemetryEvent): void
-}
+export type TelemetryContext = {
+  version: string;          // e.g. "3.4"
+  source: "public" | "debug";
+};
+
+export type TelemetryEvent<T = unknown> = {
+  name: TelemetryEventName;
+  timestamp: number;
+  context: TelemetryContext;
+  payload?: T;              // NEVER free text
+};
