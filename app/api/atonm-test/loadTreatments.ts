@@ -1,28 +1,22 @@
 // app/api/atonm-test/loadTreatments.ts
+// Loader Type A-metodedata (YAML) til runtime
 
 import fs from "fs";
 import path from "path";
 import YAML from "yaml";
-import type { Treatment } from "../../atonm/types";
+import type { Treatment } from "../../../lib/atonm/types";
 
 export function loadTreatments(): Treatment[] {
   const filePath = path.join(
     process.cwd(),
-    "app",
-    "api",
-    "atonm-data",
-    "treatments.yaml"
+    "app/api/atonm-data/type-a-methods.yaml"
   );
 
   const raw = fs.readFileSync(filePath, "utf8");
   const parsed = YAML.parse(raw);
 
-  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-    throw new Error("Expected treatments.yaml to be an object map");
-  }
-
-  return Object.entries(parsed).map(([id, value]) => ({
+  return Object.entries(parsed).map(([id, data]) => ({
     id,
-    ...(value as Omit<Treatment, "id">),
+    ...(data as Omit<Treatment, "id">),
   }));
 }
