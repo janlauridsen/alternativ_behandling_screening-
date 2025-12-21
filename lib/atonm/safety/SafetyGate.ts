@@ -1,5 +1,5 @@
 // File: lib/atonm/safety/SafetyGate.ts
-// ATONM v3.5 – SafetyGate (Trin 1: struktur, ingen AI endnu)
+// ATONM v3.5 – SafetyGate (Trin 4: strict pre-checks, no AI yet)
 
 export type SafetyClassification =
   | "SAFE"
@@ -18,13 +18,13 @@ export class SafetyGate {
   /**
    * Central safety classifier.
    *
-   * IMPORTANT (Trin 1):
-   * - No AI calls yet
-   * - Always returns SAFE
-   * - Exists only to lock contract and future wiring
+   * Trin 4 behavior:
+   * - Non-string → UNKNOWN
+   * - Empty / whitespace-only → UNKNOWN
+   * - No AI yet (SAFE by default otherwise)
    */
   static classify(input: string): SafetyResult {
-    // Structural pre-check only (no behavior change yet)
+    // Non-string input
     if (typeof input !== "string") {
       return {
         classification: "UNKNOWN",
@@ -32,9 +32,17 @@ export class SafetyGate {
       }
     }
 
+    // Empty or whitespace-only input
+    if (input.trim().length === 0) {
+      return {
+        classification: "UNKNOWN",
+        reason: "empty or whitespace input"
+      }
+    }
+
     // NOTE:
-    // Empty / whitespace handling is intentionally deferred
-    // until Trin 3 to avoid any behavior change in this step.
+    // AI-based classification will be introduced in Trin 5.
+    // Until then, all valid strings are considered SAFE.
 
     return {
       classification: "SAFE"
