@@ -1,10 +1,8 @@
 // lib/telemetry/noop.ts
-// Status: No-op implementation · bevidst tom
+// No-op sink – safe default
 
-import type { TelemetryClient, TelemetryEvent } from "./types"
+import type { TelemetryEvent } from "./types";
 
-export const noopTelemetry: TelemetryClient = {
-  track(_event: TelemetryEvent) {
-    // intentionally empty
-  },
+export function sendTelemetry(_event: TelemetryEvent): void {
+  // intentionally empty
 }
